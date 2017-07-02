@@ -1,0 +1,26 @@
+version: '2'
+services:
+  configserver:
+    image: wz/confserver
+    ports:
+       - "8888:8888"
+    environment:
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+  database:
+    image: postgres:9.5
+    ports:
+      - "15432:15432"
+    environment:
+      POSTGRES_USER: "myapp"
+      POSTGRES_PASSWORD: "dbpass"
+      POSTGRES_DB:       "myapp"
+  licensingservice:
+    image: wz/licensingservice
+    ports:
+      - "8080:8080"
+    environment:
+      PROFILE: "default"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      CONFIGSERVER_PORT:   "8888"
+      DATABASESERVER_PORT: "15432"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
